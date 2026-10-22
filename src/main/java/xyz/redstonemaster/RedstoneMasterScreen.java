@@ -11,6 +11,7 @@ import java.util.List;
 
 public class RedstoneMasterScreen extends Screen {
     private TextFieldWidget searchBox;
+    private ButtonWidget pasteButton;
     private String category = "All";
     private int selected = 0;
     private int scroll = 0;
@@ -43,6 +44,14 @@ public class RedstoneMasterScreen extends Screen {
 
         addDrawableChild(ButtonWidget.builder(Text.literal("Close"), b -> close())
                 .dimensions(width - 72, height - 28, 60, 20).build());
+
+        pasteButton = addDrawableChild(ButtonWidget.builder(Text.literal("Paste Build"), b -> {
+            if (!filtered.isEmpty() && filtered.get(selected).canPaste()) {
+                RedstoneMasterClient.queuePaste(filtered.get(selected).paste());
+                close();
+            }
+        }).dimensions(width - 162, height - 28, 84, 20).build());
+
         addDrawableChild(ButtonWidget.builder(Text.literal("↑"), b -> {
             selected = Math.max(0, selected - 1);
             ensureVisible();
@@ -87,9 +96,12 @@ public class RedstoneMasterScreen extends Screen {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        if (pasteButton != null) {
+            pasteButton.active = !filtered.isEmpty() && filtered.get(selected).canPaste();
+        }
         super.render(context, mouseX, mouseY, delta);
         context.drawCenteredTextWithShadow(textRenderer, "REDSTONE MASTER", width / 2, 12, 0xFFFF5555);
-        context.drawTextWithShadow(textRenderer, "Search • Categories • Tutorials • Command builds", 16, 58, 0xFFB8D9FF);
+        context.drawTextWithShadow(textRenderer, "Search • Categories • Tutorials • Paste builds (needs cheats/OP)", 16, 58, 0xFFB8D9FF);
 
         int listTop = 86;
         int listBottom = height - 38;
@@ -114,7 +126,8 @@ public class RedstoneMasterScreen extends Screen {
             int y = listTop + 12;
             context.drawTextWithShadow(textRenderer, entry.name(), panelX + 12, y, 0xFFFF7777);
             y += 18;
-            context.drawTextWithShadow(textRenderer, "Category: " + entry.category() + " | Difficulty: " + entry.difficulty(), panelX + 12, y, 0xFFB8D9FF);
+            String tag = entry.canPaste() ? " | Pasteable" : "";
+            context.drawTextWithShadow(textRenderer, "Category: " + entry.category() + " | Difficulty: " + entry.difficulty() + tag, panelX + 12, y, 0xFFB8D9FF);
             y += 18;
             y = drawWrapped(context, entry.description(), panelX + 12, y, panelRight - panelX - 24, 0xFFFFFFFF);
             y += 8;
@@ -155,6 +168,14 @@ public class RedstoneMasterScreen extends Screen {
             y += 11;
         }
         return y;
+    }
+
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
+        if (verticalAmount > 0) selected = Math.max(0, selected - 1);
+        else if (verticalAmount < 0) selected = Math.min(Math.max(0, filtered.size() - 1), selected + 1);
+        ensureVisible();
+        return true;
     }
 
     @Override
