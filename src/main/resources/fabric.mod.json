@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "redstone_master",
+  "version": "${version}",
+  "name": "Redstone Master",
+  "description": "An expandable library of redstone builds, schematics, tutorials, and command-block ideas.",
+  "authors": ["Redstone Master"],
+  "environment": "client",
+  "entrypoints": { "client": ["xyz.redstonemaster.RedstoneMasterClient"] },
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "minecraft": "~1.21.11",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}
