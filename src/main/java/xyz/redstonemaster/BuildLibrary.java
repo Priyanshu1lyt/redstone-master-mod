@@ -1,0 +1,61 @@
+package xyz.redstonemaster;
+
+import java.util.List;
+
+public final class BuildLibrary {
+    private BuildLibrary() {}
+
+    public static final List<BuildEntry> BUILDS = List.of(
+        new BuildEntry("2x2 Piston Door", "Doors", "Easy",
+            "A compact starter door. Build one side, then mirror it.",
+            List.of("Clear a 5x4 area behind the doorway.",
+                   "Place 4 sticky pistons, two on each side, facing the doorway.",
+                   "Attach matching door blocks to the piston faces.",
+                   "Wire both sides to a button or lever using redstone dust.",
+                   "Test the signal and adjust repeater delay if needed."),
+            List.of("4 sticky pistons", "4 door blocks", "redstone dust", "1 button", "repeaters (optional)"),
+            "No command blocks required."),
+        new BuildEntry("Hidden Entrance", "Doors", "Medium",
+            "A disguised entrance for a base wall.",
+            List.of("Choose a wall at least 3 blocks wide.",
+                   "Make a piston layout that retracts the wall blocks.",
+                   "Route redstone behind the wall to a hidden lever.",
+                   "Cover the wiring and test the entrance from both sides."),
+            List.of("sticky pistons", "matching wall blocks", "redstone dust", "lever", "repeaters"),
+            "Optional: use a command block only in worlds where commands are enabled."),
+        new BuildEntry("Item Sorter Starter", "Farms", "Medium",
+            "A small filter module for sorting one item type.",
+            List.of("Place a hopper feeding into a chest.",
+                   "Add a filter hopper and comparator beside it.",
+                   "Wire the comparator into a redstone torch/repeater circuit.",
+                   "Use a known filter-item arrangement and test with spare items."),
+            List.of("hoppers", "chest", "comparator", "redstone torch", "dust", "building blocks"),
+            "Tutorial entry; exact filter counts depend on the chosen design."),
+        new BuildEntry("Flying Machine Concept", "Machines", "Hard",
+            "A slime/honey block flying-machine concept.",
+            List.of("Pick slime or honey blocks and keep the two types separated.",
+                   "Place observers facing the intended update direction.",
+                   "Use sticky pistons to push the moving section.",
+                   "Test in a copy of the world before building over valuable terrain."),
+            List.of("slime blocks or honey blocks", "observers", "sticky pistons", "building blocks"),
+            "Java redstone timing and orientation matter; this is a guide, not a guaranteed schematic."),
+        new BuildEntry("Command Block Teleport Pad", "Command Builds", "Medium",
+            "A command-block example for a private test world.",
+            List.of("Enable commands in your test world.",
+                   "Place a command block and open its interface.",
+                   "Set it to Impulse and Needs Redstone.",
+                   "Enter: tp @p X Y Z (replace X Y Z with your destination).",
+                   "Attach a button and test in a safe area."),
+            List.of("command block", "button", "building blocks"),
+            "Requires permission; command blocks may be disabled on servers."),
+        new BuildEntry("Robot Display Blueprint", "Robots", "Easy",
+            "A decorative robot body plan with redstone-themed details.",
+            List.of("Build a 3-wide, 3-tall torso from iron or stone blocks.",
+                   "Add a 3-wide head and two contrasting eye blocks.",
+                   "Build two legs and two arms from matching blocks.",
+                   "Use redstone lamps or red concrete for chest details.",
+                   "A block statue does not walk by itself; real movement needs entity animation or commands."),
+            List.of("iron blocks or stone", "red concrete", "redstone lamps (optional)", "stairs and slabs"),
+            "Display blueprint only; not an automatic walking robot.")
+    );
+}
