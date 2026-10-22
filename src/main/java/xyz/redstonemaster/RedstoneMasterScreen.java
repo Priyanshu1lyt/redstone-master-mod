@@ -62,9 +62,14 @@ public class RedstoneMasterScreen extends Screen {
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        renderBackground(context, mouseX, mouseY, delta);
+    public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
+        super.renderBackground(context, mouseX, mouseY, delta);
         context.fill(8, 8, width - 8, height - 8, 0xE8111724);
+    }
+
+    @Override
+    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        super.render(context, mouseX, mouseY, delta);
         context.drawCenteredTextWithShadow(textRenderer, "REDSTONE MASTER", width / 2, 12, 0xFFFF5555);
         context.drawTextWithShadow(textRenderer, "Search • Categories • Tutorials • Command builds", 16, 58, 0xFFB8D9FF);
 
@@ -93,63 +98,4 @@ public class RedstoneMasterScreen extends Screen {
             y += 18;
             context.drawTextWithShadow(textRenderer, "Category: " + entry.category() + " | Difficulty: " + entry.difficulty(), panelX + 12, y, 0xFFB8D9FF);
             y += 18;
-            y = drawWrapped(context, entry.description(), panelX + 12, y, panelRight - panelX - 24, 0xFFFFFFFF);
-            y += 8;
-            context.drawTextWithShadow(textRenderer, "Materials:", panelX + 12, y, 0xFF77FFAA);
-            y += 14;
-            for (String material : entry.materials()) {
-                if (y > listBottom - 85) break;
-                context.drawTextWithShadow(textRenderer, "• " + material, panelX + 12, y, 0xFFFFFFFF);
-                y += 12;
-            }
-            y += 5;
-            if (y < listBottom - 60) {
-                context.drawTextWithShadow(textRenderer, "Steps:", panelX + 12, y, 0xFF77FFAA);
-                y += 14;
-                for (int i = 0; i < entry.steps().size() && y < listBottom - 28; i++) {
-                    String step = (i + 1) + ". " + entry.steps().get(i);
-                    y = drawWrapped(context, step, panelX + 12, y, panelRight - panelX - 24, 0xFFFFFFFF) + 3;
-                }
-            }
-            context.drawTextWithShadow(textRenderer, entry.commandNote(), panelX + 12, listBottom - 20, 0xFFFFCC66);
-        }
-        super.render(context, mouseX, mouseY, delta);
-    }
-
-    private int drawWrapped(DrawContext context, String text, int x, int y, int maxWidth, int color) {
-        StringBuilder line = new StringBuilder();
-        for (String word : text.split(" ")) {
-            String test = line.length() == 0 ? word : line + " " + word;
-            if (textRenderer.getWidth(test) > maxWidth && line.length() > 0) {
-                context.drawTextWithShadow(textRenderer, line.toString(), x, y, color);
-                y += 11;
-                line = new StringBuilder(word);
-            } else {
-                line = new StringBuilder(test);
-            }
-        }
-        if (line.length() > 0) {
-            context.drawTextWithShadow(textRenderer, line.toString(), x, y, color);
-            y += 11;
-        }
-        return y;
-    }
-
-    @Override
-    public boolean keyPressed(KeyInput input) {
-        if (searchBox != null && searchBox.isFocused()) {
-            return super.keyPressed(input);
-        }
-        int keyCode = input.key();
-        if (keyCode == org.lwjgl.glfw.GLFW.GLFW_KEY_UP) {
-            selected = Math.max(0, selected - 1); return true;
-        }
-        if (keyCode == org.lwjgl.glfw.GLFW.GLFW_KEY_DOWN) {
-            selected = Math.min(Math.max(0, filtered.size()-1), selected + 1); return true;
-        }
-        return super.keyPressed(input);
-    }
-
-    @Override
-    public boolean shouldPause() { return false; }
-  }
+            y = drawWrap
